@@ -1,0 +1,42 @@
+﻿using System;
+using System.Net;
+using DemoF.Web.Migrations;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+
+namespace DemoF.Web
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var host = BuildWebHost(args);
+
+            // http://odetocode.com/blogs/scott/archive/2016/09/20/database-migrations-and-seeding-in-asp-net-core.aspx
+            ProcessDbCommands.Process(args, host);
+
+            host.Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+           WebHost.CreateDefaultBuilder(args)
+                  .UseStartup<Startup>()
+                  .UseKestrel(options =>
+                  {
+                      options.AddServerHeader = false;
+
+                      var hostingEnv = (IHostingEnvironment)options.ApplicationServices.GetService(typeof(IHostingEnvironment));
+                      if (hostingEnv.IsDevelopment())
+                      {
+                          options.Listen(IPAddress.Loopback, 5000);
+                          if (Convert.ToBoolean(Startup.Configuration["EnableDevHttps"]))
+                          {
+                              options.Listen(IPAddress.Loopback, 5001, listenOptions =>
+                              {
+                                  listenOptions.UseHttps("extra/****.pfx", "password");
+                              });
+                          }
+                      }
+                  }).Build();
+    }
+}
