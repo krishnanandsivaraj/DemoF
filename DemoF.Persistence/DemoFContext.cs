@@ -26,6 +26,7 @@ namespace DemoF.Persistence
             }
 
             builder.Entity<User>().ToTable("Users").Property(p => p.Id).HasColumnName("Id");
+            //builder.Entity<User>().HasIndex(u => u.Id).IsUnique();
         }
     }
 }

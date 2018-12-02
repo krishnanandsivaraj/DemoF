@@ -20,6 +20,11 @@ namespace DemoF.Services
             _context = context;
         }
 
+        public async Task AddAsync(User user)
+        {
+            await _context.Users.AddAsyn(user);
+        }
+
         public List<User> All()
         {
             return _context.Users.GetAll().ToList();
@@ -32,12 +37,22 @@ namespace DemoF.Services
 
         public async Task<User> GetUserAsync(int id)
         {
-            return await _context.Users.FindBy(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
+            return await _context.Users.GetUserAsync(id);
         }
 
         public async Task<User> GetUserAsync(string name)
         {
             return await _context.Users.FindBy(x => x.FirstName == name || x.MiddleName == name || x.LastName == name).AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public async Task RemoveAsync(int id)
+        {
+            await _context.Users.DeleteAsyn(new User(){ Id = id});
+        }
+
+        public async Task<User> UpdateAsync(int id, User user)
+        {
+            return await _context.Users.UpdateAsyn(user, id);
         }
     }
 }

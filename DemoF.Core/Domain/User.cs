@@ -1,9 +1,11 @@
-﻿using System;
+﻿using DemoF.Core.Contracts;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DemoF.Core.Domain
 {
-    public class User
+    public class User : IUpdatableModel
     {
         [Key]
         public int Id { get; set; }
@@ -22,6 +24,10 @@ namespace DemoF.Core.Domain
         public DateTime ValidFrom { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime ValidUntill { get; set; }
+        public DateTime? ValidUntill { get; set; }
+
+        public IDictionary<string, object> GetUpdatableProperties() => new Dictionary<string, object>() { { nameof(FirstName), FirstName },
+                                                                                                     { nameof(MiddleName), FirstName },
+                                                                                                     { nameof(LastName), LastName }};
     }
 }

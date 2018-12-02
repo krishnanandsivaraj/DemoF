@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DemoF.Core.Contracts;
 using DemoF.Core.Domain;
+using DemoF.Web.Extensions;
+using DemoF.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoF.Web.Controllers
@@ -17,39 +20,57 @@ namespace DemoF.Web.Controllers
             _userServices = userService;
         }
 
-        // GET api/values
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {
             return _userServices.All();
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public async Task<User> Get(int id)
         {
-            if (id == 0)
-                throw new KeyNotFoundException("This is a special exception for id = 0");
+            if (id <= 0)
+                throw new KeyNotFoundException("Just added this special exception for id = 0");
 
             return await _userServices.GetUserAsync(id);
         }
 
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<User> Post([FromBody] UserViewModel model)
         {
+            var newUser = new User()
+            {
+                FirstName = model.FirstName,
+                MiddleName = model.MiddleName,
+                LastName = model.LastName,
+                ValidFrom = DateTime.UtcNow,
+                ValidUntill = DateTime.UtcNow + TimeSpan.FromDays(30)
+            };
+
+            await _userServices.AddAsync(newUser);
+            return newUser;
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<User> Put(int id, [FromBody] UserViewModel model)
         {
+            var updateUser = new User()
+            {
+                Id = id,
+                FirstName = model.FirstName,
+                MiddleName = model.MiddleName,
+                LastName = model.LastName
+            };
+
+            await _userServices.UpdateAsync(id, updateUser);
+            return updateUser;
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
+            await _userServices.RemoveAsync(id);
+            return new OkResult();
         }
     }
 }

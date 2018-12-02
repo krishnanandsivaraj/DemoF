@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DemoF.Persistence.Repositories
 {
     using Core.Repositories;
+    using DemoF.Core.Contracts;
 
     public abstract class GenericRepository<T> : Repository<T>, IGenericRepository<T> where T : class
     {
@@ -25,7 +26,6 @@ namespace DemoF.Persistence.Repositories
 
         public virtual async Task<ICollection<T>> GetAllAsync()
         {
-
             return await _context.Set<T>().ToListAsync();
         }
 
@@ -100,14 +100,14 @@ namespace DemoF.Persistence.Repositories
             return exist;
         }
 
-        public virtual async Task<T> UpdateAsyn(T t, object key)
+        public virtual async Task<T> UpdateAsyn(IUpdatableModel t, object key)
         {
             if (t == null)
                 return null;
             T exist = await _context.Set<T>().FindAsync(key);
             if (exist != null)
             {
-                _context.Entry(exist).CurrentValues.SetValues(t);
+                _context.Entry(exist).CurrentValues.SetValues(t.GetUpdatableProperties());
                 await _context.SaveChangesAsync();
             }
             return exist;

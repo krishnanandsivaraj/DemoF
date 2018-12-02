@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DemoF.Core.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -30,6 +31,6 @@ namespace DemoF.Core.Repositories
         void Save();
         Task<int> SaveAsync();
         T Update(T t, object key);
-        Task<T> UpdateAsyn(T t, object key);
+        Task<T> UpdateAsyn(IUpdatableModel t, object key);
     }
 }
