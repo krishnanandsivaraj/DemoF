@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DemoF.Core.Repositories
 {
-    public interface IGenericRepository<T> : IRepository<T> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         T Add(T t);
         Task<T> AddAsyn(T t);

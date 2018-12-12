@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DemoF.Core.Contracts;
 using DemoF.Core.Domain;
-using DemoF.Web.Extensions;
 using DemoF.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +22,7 @@ namespace DemoF.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {
-            return _userServices.All();
+            return await _userServices.AllAsync();
         }
 
         [HttpGet("{id}")]

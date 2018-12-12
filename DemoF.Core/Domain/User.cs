@@ -29,5 +29,7 @@ namespace DemoF.Core.Domain
         public IDictionary<string, object> GetUpdatableProperties() => new Dictionary<string, object>() { { nameof(FirstName), FirstName },
                                                                                                      { nameof(MiddleName), FirstName },
                                                                                                      { nameof(LastName), LastName }};
+
+        public string GetUpdateQuery() => "UPDATE Users SET FirstName = @FirstName, MiddleName = @MiddleName, LastName = @LastName WHERE Id = @Id";
     }
 }

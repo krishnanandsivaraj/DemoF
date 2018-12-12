@@ -1,7 +1,7 @@
-﻿using DemoF.Core.Domain;
-using DemoF.Core.Repositories;
+﻿using DemoF.Core.Repositories;
 using DemoF.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DemoF.Persistence
 {
@@ -9,13 +9,14 @@ namespace DemoF.Persistence
     {
         private readonly DemofContext context;
 
-        public IUserRepository Users { get; private set; }
+        public IUserRepositoryDapper Users { get; private set; }
+        //public IUserRepository Users { get; private set; }
 
-        public UnitOfDemof(DemofContext context) : base (context)
+        public UnitOfDemof(DemofContext context, IServiceProvider serviceProvider) : base (context)
         {
             this.context = context;
-
-            Users = new UserRepository(this.context);
+            Users = (IUserRepositoryDapper)serviceProvider.GetService(typeof(IUserRepositoryDapper));
+            //Users = new UserRepository(this.context);
         }
 
         public int Complete()

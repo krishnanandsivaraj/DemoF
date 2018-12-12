@@ -11,6 +11,7 @@ namespace DemoF.Web.Extensions
     using Persistence.Repositories;
     using Filters;
     using Services;
+    using DemoF.Core.Domain;
 
     public static class ServiceCollectionExtensions
     {
@@ -65,6 +66,8 @@ namespace DemoF.Web.Extensions
             services.AddScoped<ApiExceptionFilter>();
 
             services.AddTransient<IUserRepository, UserRepository>();
+
+            services.AddTransient<IUserRepositoryDapper, UserRepositoryDapper>(provider => new UserRepositoryDapper(Startup.Configuration["Data:DemoF:ConnectionString"]));
 
             services.AddTransient<IUserService, UserService>();
             return services;

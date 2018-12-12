@@ -5,7 +5,8 @@ namespace DemoF.Core.Repositories
 {
     public interface IUnitOfDemof : IUnitOfWork, IDisposable
     {
-        IUserRepository Users { get; }
+        IUserRepositoryDapper Users { get; }
+        //IUserRepository Users { get; }
         int Complete();
     }
 }

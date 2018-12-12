@@ -13,9 +13,9 @@ namespace DemoF.Persistence.Repositories
 
         public IEnumerable<User> GetAll()
         {
-            return DemofContext.Users.AsNoTracking().ToList();
+            return _context.Users.AsNoTracking().ToList();
         }
 
-        public async Task<User> GetUserAsync(int id) => await GetFirstOrDefaultAsync(predicate: x => x.Id == id);
+        public async Task<User> GetUserAsync(int id) => await FindAsync(match: x => x.Id == id);
     }
 }

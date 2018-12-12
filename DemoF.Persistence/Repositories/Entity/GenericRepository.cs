@@ -10,11 +10,11 @@ namespace DemoF.Persistence.Repositories
     using Core.Repositories;
     using DemoF.Core.Contracts;
 
-    public abstract class GenericRepository<T> : Repository<T>, IGenericRepository<T> where T : class
+    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected DemofContext _context;
 
-        public GenericRepository(DemofContext context) : base(context)
+        public GenericRepository(DemofContext context)
         {
             _context = context;
         }
